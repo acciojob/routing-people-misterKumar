@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import 'regenerator-runtime/runtime'
+
 
 function UserDetails() {
   const { id } = useParams();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUser() {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/users/${id}`
-      );
-      const data = await response.json();
-      setUser(data);
+      try {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${id}`
+        );
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchUser();
   }, [id]);
 
-  if (!user) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <div>Error loading user details</div>;
   }
 
   return (
