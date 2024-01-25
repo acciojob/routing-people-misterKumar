@@ -24,20 +24,20 @@ function UserList() {
     fetchUsers();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div>
       <h1>User List</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            <Link to={`/users/${user.id}`}>{user.name}</Link>
-          </li>
-        ))}
-      </ul>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>
+              <Link to={`/users/${user.id}`}>{user.name}</Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
